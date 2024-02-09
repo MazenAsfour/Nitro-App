@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title id="title" title="@yield('title', 'home')">@yield('title', 'Laravel')</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -22,6 +23,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="/dashboard/css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="/dashboard/css/vertical-layout-light/index.css">
 
     <meta id="token" name="csrf-token" content="{{ csrf_token() }}">
 
@@ -52,8 +54,11 @@
 
         <div class="container-fluid page-body-wrapper">
             @includeFirst(['dashboard/layouts/leftBar'])
-
-            @yield('content')
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @yield('content')
+                </div>
+            </div>
         </div>
     </div>
     <!-- plugins:js -->
@@ -66,17 +71,10 @@
     <script src="/dashboard/js/dataTables.select.min.js"></script>
 
     <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="/dashboard/js/off-canvas.js"></script>
-    <script src="/dashboard/js/hoverable-collapse.js"></script>
-    <script src="/dashboard/js/template.js"></script>
-    <script src="/dashboard/js/settings.js"></script>
-    <script src="/dashboard/js/todolist.js"></script>
-    <!-- endinject -->
+
     <!-- Custom js for this page-->
+    <script src="/dashboard/js/users.js" defer></script>
     <script src="/dashboard/js/dashboard.js"></script>
-    <script src="/dashboard/js/Chart.roundedBarCharts.js"></script>
-    <!-- End custom js for this page-->
     @stack('js')
 </body>
 

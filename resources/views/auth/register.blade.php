@@ -12,13 +12,13 @@
                             @csrf
 
                             <div class="row mb-3">
-                                <label for="name"
+                                <label for="firstname"
                                     class="col-md-4 col-form-label text-md-end">{{ __('First Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text"
-                                        class="form-control @error('firstname') is-invalid @enderror" name="firstname"
-                                        value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
+                                    <input type="text" class="form-control @error('firstname') is-invalid @enderror"
+                                        name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname"
+                                        autofocus>
 
                                     @error('firstname')
                                         <span class="invalid-feedback" role="alert">
@@ -36,11 +36,11 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="name"
+                                <label for="lastname"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Last Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text"
+                                    <input id="lastname" type="text"
                                         class="form-control @error('lastname') is-invalid @enderror" name="lastname"
                                         value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
 

@@ -25,6 +25,6 @@ class HomeController extends Controller
     {
         $user = Auth::user();
      
-        return redirect("/dashboard");
+        return redirect("/admin");
     }
 }
