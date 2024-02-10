@@ -9,30 +9,36 @@ use DB;
 use Hash;
 use Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Services\UserService; 
 
 class UserController extends Controller
 {
-    public function __construct()
+    protected $userService;
+
+    public function __construct(UserService $userService)
     {
         $this->middleware('auth');
+
+        $this->userService = $userService;
     }
+ 
     public function index()
     {
-        return view("dashboard.index");
+        return view("dashboard.users.index");
     }
     public function createUserView()
     {
-        return view("dashboard.create_user");
+        return view("dashboard.users.create_user");
     }
     public function trashedView()
     {
-        return view("dashboard.trashed_users");
+        return view("dashboard.users.trashed_users");
     }
     public function updateUserView($id)
     {
         $user = User::where("id",$id)->first();
         if($user){
-            return view("dashboard.update_user")->with(compact("user"));
+            return view("dashboard.users.update_user")->with(compact("user"));
         }else{
             abort(404);
         }
@@ -44,7 +50,7 @@ class UserController extends Controller
 
         return DataTables::of($data)->make(true);
     }
-    public function getTrashedUsers()
+    public function trashed()
     {
         $data = User::withTrashed()
         ->whereNotNull("deleted_at")
@@ -67,8 +73,7 @@ class UserController extends Controller
             $user = User::find($request->id);
 
             if($user){
-                // Soft delete the user
-                $user->delete();
+                $this->userService->destroy($user->id);
             }else{
                 return response()->json(["success" => false, "message" =>"Can't found user with this id"]);
             }
@@ -84,8 +89,6 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         try {
-            DB::beginTransaction();
-            $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
 
             $rules = [
                 'firstname' => 'required|string|max:255',
@@ -116,15 +119,12 @@ class UserController extends Controller
             }
 
             if($request->hasFile("profile")){
-                $path = $request->file('profile')->store('public/images');
-                $user_image= str_replace("public","/storage",$path);
-                $updatingTheirImage = true;
+                $user_image = $this->userService->upload($request->file('profile'));
             }else{  
                 // create defualt profile to user
                 $user_image ='/images/user-defualt.png';
             }
-
-            User::create([
+            $user = $this->userService->store([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'middlename' => $request->middlename,
@@ -133,15 +133,15 @@ class UserController extends Controller
                 'type' => $request->type,
                 'prefixname' => $request->gender,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' =>$this->userService->Hash($request->password),
                 'photo' => $user_image,
             ]);
-      
-            DB::commit();
-
-            return response()->json(["success" => true, "message" => "Created successfully"]);
+            if($user){
+                return response()->json(["success" => true, "message" => "Created successfully"]);
+            }else{
+                return response()->json(["success" => false, "message" => "Some thing went wrong when try process this request!"]);
+            }
         } catch (\Throwable $th) {
-            DB::rollBack();
             return response()->json(["success" => false, "message" => $th->getMessage()]);
         }
     }
@@ -150,8 +150,6 @@ class UserController extends Controller
     public function updateUser(Request $request)
     {
         try {
-            DB::beginTransaction();
-            $request->merge(['username' => $request->firstname . ' ' . $request->lastname]);
 
             $rules = [
                 'firstname' => 'required|string|max:255',
@@ -190,43 +188,48 @@ class UserController extends Controller
             }
 
         
-            $user = User::find($request->user_id);
-
+            $dataUpdated = [
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'middlename' => $request->middlename,
+                'username' => $request->username,
+                'suffixname' => $request->suffixname,
+                'type' => $request->type,
+                'prefixname' => $request->gender,
+                'email' => $request->email,
+            ];
             if($request->hasFile("profile")){
-                $path = $request->file('profile')->store('public/images');
-                $user_image= str_replace("public","/storage",$path);
-                $user->photo = $request->photo;
+                $file = $this->userService->upload($request->file('profile'));
+                
+                // $user->photo = $request->photo;
+                $dataUpdated['photo'] = $file;
             }
             if(strtolower($request->update_password) =="on"){
-                $user->password = Hash::make($request->password);
+                $dataUpdated['password'] = $this->userService->Hash($request->password);
+                ;
             }
 
-            $user->firstname = $request->firstname;
-            $user->lastname = $request->lastname;
-            $user->middlename = $request->middlename;
-            $user->username = $request->username;
-            $user->suffixname = $request->suffixname;
-            $user->type = $request->type;
-            $user->prefixname = $request->gender;
-            $user->email = $request->email;
-            $user->save();
+            $user = $this->userService->update($request->user_id,$dataUpdated );
 
-            DB::commit();
-
-            return response()->json(["success" => true, "message" => "Updated successfully"]);
+            if($user){
+                return response()->json(["success" => true, "message" => "Updated successfully"]);
+            }else{
+                return response()->json(["success" => false, "message" => "Some thing went wrong when try process this request!"]);
+            }
         } catch (\Throwable $th) {
-            DB::rollBack();
             return response()->json(["success" => false, "message" => $th->getMessage()]);
         }
     }
 
-    public function deleteUserPermently(Request $request)
+
+    public function delete($id)
     {
         try {
             DB::beginTransaction();
 
-            $user = User::withTrashed()->find($request->id);
+            $user = User::withTrashed()->find($id);
             if($user){
+                $this->userService->delete($user->id);
                 $user->forceDelete(); // Permanently delete the user from the database
             }else{
                 return response()->json(["success" => false, "message" =>"Can't found user with this id!"]);
@@ -240,14 +243,15 @@ class UserController extends Controller
             return response()->json(["success" => false, "message" => $th->getMessage()]);
         }
     }
-    public function restoreUser(Request $request)
+    public function restore($id)
     {
         try {
             DB::beginTransaction();
 
-            $user = User::withTrashed()->find($request->id);
+            $user = User::withTrashed()->find($id);
             if($user){
-                $user->restore(); // Restore the user from the trashed records
+                // Restore the user from the trashed records
+                $this->userService->restore($user->id);
             }else{
                 return response()->json(["success" => false, "message" =>"Can't found user with this id!"]);
             }

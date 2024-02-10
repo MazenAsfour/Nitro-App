@@ -63,7 +63,12 @@
                                     <option class="{{ $user->gender == 'ms' ? 'd-none' : '' }}" value="ms">Ms</option>
                                 </select>
                             </div>
-                            <div class="col-md-12 mt-3">
+                            <div class="col-md-6 mt-3">
+                                <label>Username</label>
+                                <input id="username" type="text" placeholder="Username" class="form-control"
+                                    name="username" value="{{ $user->username }}" required>
+                            </div>
+                            <div class="col-md-6 mt-3">
                                 <label>Email</label>
                                 <input id="email" type="email" placeholder="Email" class="form-control" name="email"
                                     value="{{ $user->email }}" required autocomplete="email">
@@ -80,7 +85,8 @@
                             </div>
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <div class="form-check form-check pl-5 pt-3">
-                                <input class="form-check-input" type="checkbox" name="update_password" id="update-password">
+                                <input class="form-check-input" type="checkbox" name="update_password"
+                                    id="update-password">
                                 <label class="form-check-label  ml-1" for="">
                                     Update Password
                                 </label>

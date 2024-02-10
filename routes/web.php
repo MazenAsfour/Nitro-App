@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController; // Import UserController
-
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,8 +17,9 @@ use App\Http\Controllers\UserController; // Import UserController
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('logout', [LoginController::class,'logout']);
 
 Route::prefix("/admin")->group(function () {
     Route::get('/', [UserController::class, 'index'])->name("users.index");
@@ -32,5 +34,6 @@ Route::prefix("/admin")->group(function () {
     Route::post('/user-delete-permently', [UserController::class, 'deleteUserPermently'])->name("users.deletePermently");
     Route::post('/restore-user', [UserController::class, 'restoreUser'])->name("users.restoreUser");
 
+    Route::softDeletes('users', 'App\Http\Controllers\UserController');
 
 })->middleware("auth");

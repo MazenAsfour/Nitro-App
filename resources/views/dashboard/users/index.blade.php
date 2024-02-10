@@ -27,7 +27,6 @@
                                             <th>Email</th>
                                             <th>Prefix Name</th>
                                             <th>Created at</th>
-
                                             <th>Action</th>
                                         </tr>
                                     </thead>

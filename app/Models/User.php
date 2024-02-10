@@ -51,4 +51,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    public function getAvatarAttribute()
+    {
+        return $this->attributes['photo'];
+    }
+    public function getFullnameAttribute()
+    {
+        return $this->attributes['firstname']." ".$this->attributes['middlename']." ".$this->attributes['lastname'];
+    }
+    public function getMiddleinitialAttribute()
+    {
+        return $this->attributes['middlename'];
+    }
 }

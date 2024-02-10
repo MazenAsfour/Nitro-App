@@ -53,7 +53,7 @@
         @includeFirst(['dashboard/layouts/header'])
 
         <div class="container-fluid page-body-wrapper">
-            @includeFirst(['dashboard/layouts/leftBar'])
+            @includeFirst(['dashboard/layouts/left_bar'])
             <div class="main-panel">
                 <div class="content-wrapper">
                     @yield('content')

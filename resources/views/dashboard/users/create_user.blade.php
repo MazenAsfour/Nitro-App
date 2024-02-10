@@ -55,7 +55,12 @@
                                     <option value="ms">Ms</option>
                                 </select>
                             </div>
-                            <div class="col-md-12 mt-3">
+                            <div class="col-md-6 mt-3">
+                                <label>Username</label>
+                                <input id="username" type="text" placeholder="Username" class="form-control"
+                                    name="username" value="" required>
+                            </div>
+                            <div class="col-md-6 mt-3">
                                 <label>Email</label>
                                 <input id="email" type="email" placeholder="Email" class="form-control" name="email"
                                     value="" required autocomplete="email">
