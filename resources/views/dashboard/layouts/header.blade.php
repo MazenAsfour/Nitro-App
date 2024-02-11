@@ -14,8 +14,8 @@
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle d-flex justify-content-center align-self-center" href="#"
                     data-toggle="dropdown" id="profileDropdown">
-                    <img src="{{ Auth::user()->getAvatarAttribute() }}" alt="profile" />
-                    <h6 class="username">{{ Auth::user()->getFullnameAttribute() }}</h6>
+                    <img src="{{ Auth::user()->avatar }}" alt="profile" />
+                    <h6 class="username">{{ Auth::user()->fullname }}</h6>
 
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">

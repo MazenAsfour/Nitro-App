@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Events\UserSaved;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,21 +52,45 @@ class User extends Authenticatable
     ];
 
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+     protected $dispatchesEvents = [
+        'saved' => UserSaved::class,
+    ];
+
+
     public function getAvatarAttribute()
     {
         return $this->attributes['photo'];
     }
     public function getFullnameAttribute()
     {
-        return $this->attributes['firstname']." ".$this->attributes['middlename']." ".$this->attributes['lastname'];
+        $fullname = $this->attributes['firstname'] . ' ';
+        
+        // Check if middlename exists and is not empty
+        if (!empty($this->attributes['middlename'])) {
+            $fullname .= $this->generateMiddleinitial($this->attributes['middlename']). '. ';
+        }
+        
+        $fullname .= $this->attributes['lastname'];
+        
+        return $fullname;
     }
     public function getMiddleinitialAttribute()
     {
-        return $this->attributes['middlename'];
+        // Assuming 'middlename' is the attribute for the user's middle name
+        // Adjust the attribute name as needed
+        $middlename = $this->attributes['middlename'];
+
+        if (!empty($middlename )) {
+            // Extract the first character of the middlename and convert it to uppercase
+            return strtoupper($this->generateMiddleinitial($middlename )) . '.';
+        }
+
+        return null;
+    }
+    public function generateMiddleinitial($middlename){
+        // Take the first character of the middlename as the middle initial
+        $middleInitial = substr($middlename, 0, 1);
+        return $middleInitial;
+    
     }
 }

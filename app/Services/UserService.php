@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Detail;
+use App\Events\UserSaved;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -40,23 +43,43 @@ class UserService implements UserServiceInterface
     /**
      * Define the validation rules for the model.
      *
-     * @param  int $id
+     * @param  $request  
      * @return array
      */
-    public function rules($id = null)
-    {
-        return [
-            /**
-             * Rule syntax:
-             *  'column' => 'validation1|validation2'
-             *
-             *  or
-             *
-             *  'column' => ['validation1', function1()]
-             */
-            'firstname' => 'required',
-        ];
+    public function rules($request)
+{
+    // Initialize an empty array for rules
+    $rules = [];
+
+    // Define common rules for create and update
+    $commonRules = [
+        'firstname' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'gender' => 'required|string|in:mr,mrs,ms',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+    ];
+
+    // Add common rules to the main rules array
+    $rules = $commonRules;
+
+    // Check if this is an update request (has user_id)
+    if (isset($request["user_id"])) {
+        // Add specific rules for update request
+        $rules['username'] = ['required', 'max:255', 'unique:users,username,' . $request["user_id"]];
+        $rules['email'] = 'required|email|unique:users,email,' . $request["user_id"];
+    } else {
+        // Add specific rules for create request
+        $rules['username'] = ['required', 'max:255', 'unique:users,username'];
+        $rules['email'] = 'required|email|unique:users,email';
     }
+    // Check if the 'update_password' key is set to update the password when the checkbox is off. If the checkbox is off, the 'update_password' index won't be present in the request data.
+    if (!isset($request['update_password'])) {
+        unset($rules['password']);
+    }
+
+    return $rules;
+}
 
     /**
      * Retrieve all resources and paginate.
@@ -82,7 +105,7 @@ class UserService implements UserServiceInterface
      * Create model resource.
      *
      * @param  array $attributes
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \App\Models\User
      */
     public function store(array $attributes)
     {
@@ -213,8 +236,41 @@ class UserService implements UserServiceInterface
     public function upload(UploadedFile $file)
     {
         $path = $file->store('public/images');
-        $file= str_replace("public","/storage",$path);
-        return $file;
+        $new_path= str_replace("public","/storage",$path);
+        return url('/').$new_path;
+    }
+
+    public function saveUserDetails(User $user)
+    {
+        $fullName = $user->firstname . ' ' . $user->middlename . ' ' . $user->lastname;
+        $middleInitial = substr($user->middlename, 0, 1);
+        $avatar = $user->photo; // assuming 'photo' is the attribute for the user's photo
+        $gender = $user->prefixname; // assuming 'prefixname' is the attribute for the user's gender
+
+        // Save to details table
+        Detail::create([
+            'key' => 'full_name',
+            'value' => $fullName,
+            'user_id' => $user->id
+        ]);
+
+        Detail::create([
+            'key' => 'middle_initial',
+            'value' => $middleInitial,
+            'user_id' => $user->id
+        ]);
+
+        Detail::create([
+            'key' => 'avatar',
+            'value' => $avatar,
+            'user_id' => $user->id
+        ]);
+
+        Detail::create([
+            'key' => 'gender',
+            'value' => $gender,
+            'user_id' => $user->id
+        ]);
     }
 }
 

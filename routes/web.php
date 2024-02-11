@@ -28,7 +28,7 @@ Route::prefix("/admin")->group(function () {
     Route::get('/user-create', [UserController::class, 'createUserView'])->name("users.createView");
     Route::post('/user-create', [UserController::class, 'createUser'])->name("users.create");
     Route::get('/user-update/{id}', [UserController::class, 'updateUserView'])->name("users.updateView");
-    Route::post('/user-update', [UserController::class, 'updateUser'])->name("users.update");
+    Route::post('/user-update/{id}', [UserController::class, 'updateUser'])->name("users.update");
     Route::get('/users-trashed', [UserController::class, 'getTrashedUsers'])->name("users.updateView");
     Route::get('/trashed-users', [UserController::class, 'trashedView'])->name("users.trashedView");
     Route::post('/user-delete-permently', [UserController::class, 'deleteUserPermently'])->name("users.deletePermently");

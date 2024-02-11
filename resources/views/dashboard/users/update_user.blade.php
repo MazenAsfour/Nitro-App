@@ -15,7 +15,8 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Update User #{{ $user->id }}</h2>
-                    <form type="POST" id="update-user" action="/admin/user-update" enctype="multipart/form-data">
+                    <form type="POST" id="update-user" action="/admin/user-update/{{ $user->id }}"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-12 ">
@@ -128,10 +129,8 @@
             $('#update-user').submit(function(e) {
                 e.preventDefault();
                 var selector = "#update-user";
-                $(selector + " .spinner-border").removeClass("d-none");
-
+                handleSpinner(selector, true)
                 var formData = new FormData(this);
-
                 $.ajax({
                     type: 'POST',
                     url: $(selector).attr("action"),
@@ -139,25 +138,71 @@
                     contentType: false,
                     processData: false,
                     success: function(res) {
-                        $(selector + " .spinner-border").addClass("d-none");
+                        handleSpinner(selector, false)
+                        console.log(res)
                         if (res.success) {
-                            $(selector + " .alert-success ").removeClass("d-none");
-                            $(selector + " .alert-danger ").addClass("d-none");
-                            $(selector + " .alert-success").html(res.message);
-
+                            handleAlerts(selector, true, res.message)
                             setTimeout(() => {
                                 window.location.href = "/admin"
                             }, 3000);
                         } else {
-                            $(selector + " .alert-success ").addClass("d-none");
-                            $(selector + " .alert-danger ").removeClass("d-none");
-                            $(selector + " .alert-danger").html(res.message);
+                            handleAlerts(selector, false, res.message)
                         }
 
                     },
-                    error: function(data) {}
+                    error: function(xhr, textStatus, errorThrown) {
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            var selector = "#update-user";
+                            collectValidationErrors(xhr.responseJSON.errors, selector)
+                            handleSpinner(selector, false)
+                        }
+                    }
                 });
             });
+
+            function collectValidationErrors(errors, selector) {
+                var errorMessage = '<ul>';
+
+                $.each(errors, function(field, messages) {
+                    // Loop through each error message for the field
+                    $.each(messages, function(index, message) {
+                        errorMessage += '<li>' + message + '</li>';
+                    });
+                });
+
+                errorMessage += '</ul>';
+                handleAlerts(selector, false, errorMessage)
+            }
+
+            function handleSpinner(selector, show = false) {
+                var SelectorSpinner = $(selector + " .spinner-border");
+                if (show) {
+                    SelectorSpinner.removeClass("d-none")
+                } else {
+                    SelectorSpinner.addClass("d-none")
+                }
+            }
+
+            function handleAlerts(selector, success = false, message = null) {
+                var SelectorSuccess = $(selector + " .alert-success");
+                var SelectorFailed = $(selector + " .alert-danger");
+
+                if (success) {
+                    if (SelectorSuccess.length) {
+                        SelectorSuccess.removeClass("d-none")
+                        SelectorFailed.addClass("d-none")
+                        if (message)
+                            SelectorSuccess.html(message)
+                    }
+                } else {
+                    if (SelectorFailed.length) {
+                        SelectorFailed.removeClass("d-none")
+                        SelectorSuccess.addClass("d-none")
+                        if (message)
+                            SelectorFailed.html(message)
+                    }
+                }
+            }
         </script>
     @endpush
 @endsection

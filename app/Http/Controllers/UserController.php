@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\User; 
@@ -23,11 +24,12 @@ class UserController extends Controller
     }
  
     public function index()
-    {
+    {        
         return view("dashboard.users.index");
     }
     public function createUserView()
     {
+   
         return view("dashboard.users.create_user");
     }
     public function trashedView()
@@ -122,12 +124,12 @@ class UserController extends Controller
                 $user_image = $this->userService->upload($request->file('profile'));
             }else{  
                 // create defualt profile to user
-                $user_image ='/images/user-defualt.png';
+                $user_image =url('/').'/images/user-defualt.png';
             }
             $user = $this->userService->store([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
-                'middlename' => $request->middlename,
+                'middlename' =>$this->userService-> $request->middlename,
                 'username' => $request->username,
                 'suffixname' => $request->suffixname,
                 'type' => $request->type,
@@ -147,47 +149,13 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request)
+    public function updateUser(UserRequest $request,$id)
     {
         try {
-
-            $rules = [
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'username' => ['required', 'max:255', 'unique:users,username,' . $request->user_id],
-                'gender' => 'required|string|in:mr,mrs,ms',
-                'email' => 'required|email|unique:users,email,' . $request->user_id,
-                'password' => 'required|string|min:8|confirmed',
-            ];
-
-            if(strtolower($request->update_password) !=="on"){
-                //here on update page when user need update data without passoword
-                unset($rules['password']);
-            }
-            
-        
-            // Validate the request
-            $validator = Validator::make($request->all(), $rules);
-        
-            // If validation fails, retrieve the validation errors
-            if ($validator->fails()) {
-                $errors = $validator->errors()->all();
-        
-                // Format errors as HTML list
-                $errorList = '<ul>';
-                foreach ($errors as $error) {
-                    $errorList .= "<li>$error</li>";
-                }
-                $errorList .= '</ul>';
-        
-                // Return the HTML list of errors
-                return response()->json(['success' => false, 'message' => $errorList]);
-            }
             if(empty($request->user_id)){
                 return response()->json(["success" => false, "message" => "Some thing went wrong when try do this request!"]);
             }
-
-        
+   
             $dataUpdated = [
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
@@ -206,7 +174,7 @@ class UserController extends Controller
             }
             if(strtolower($request->update_password) =="on"){
                 $dataUpdated['password'] = $this->userService->Hash($request->password);
-                ;
+                
             }
 
             $user = $this->userService->update($request->user_id,$dataUpdated );
