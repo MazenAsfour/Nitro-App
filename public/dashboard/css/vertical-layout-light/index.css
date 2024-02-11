@@ -1,0 +1,66 @@
+.pointer {
+  cursor: pointer;
+}
+.fa-times {
+  color: rgb(214, 0, 0);
+}
+
+.ds-none {
+  display: none;
+}
+.fa-edit {
+  color: #4b49ac;
+}
+
+.username {
+  margin-top: 10px;
+  margin-left: 8px;
+  color: #4b49ac;
+}
+.alert-area {
+  padding: 14px 14px -0;
+}
+.alert-area .alert-danger ul {
+  padding-bottom: 0;
+  margin-bottom: 0 !important;
+}
+form #uploadedImageProfile {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 100%;
+}
+.dropdown-item form .btn-link {
+  color: #4b49ac !important;
+  text-decoration: unset !important;
+}
+.ti-power-off.text-primary {
+  color: #4b49ac !important;
+}
+@media screen and (max-width: 767px) {
+  /* div.dataTables_wrapper div.dataTables_length,
+  div.dataTables_wrapper div.dataTables_filter,
+  div.dataTables_wrapper div.dataTables_info,
+  div.dataTables_wrapper div.dataTables_paginate {
+    text-align: justify !important;
+  } */
+}
+
+.active-menu {
+  z-index: 9999999999;
+  /* top: 0; */
+  left: 0;
+  border-top: 2px solid #4b49ac;
+}
+
+button[data-toggle="offcanvas"] {
+  cursor: pointer;
+}
+.alert {
+  padding: 8px 12px;
+  font-size: 14px;
+  margin: 0 10px 10px;
+}
+.dataTable td p {
+  margin-bottom: 0;
+}
