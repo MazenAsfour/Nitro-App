@@ -22,7 +22,7 @@ return new class extends Migration
             'prefixname' => "Mr",
             'email' =>"Mazenasfour6@gmail.com",
             "password"=>Hash::make("mazen@123"),
-            'photo' => 'http://127.0.0.1:8000/storage/images/mazen.jpeg'
+            'photo' => 'http://127.0.0.1:8000/images/mazen.jpeg'
         ]);
     }
 

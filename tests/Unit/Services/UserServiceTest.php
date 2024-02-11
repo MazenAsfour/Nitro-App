@@ -34,7 +34,7 @@ class UserServiceTest extends TestCase
     }
     public function fakerData(){
 
-        //create user with dumy data
+        //create user with dumy data 
         $faker = Faker::create();
 
         $userData = [
@@ -44,7 +44,7 @@ class UserServiceTest extends TestCase
             'username' => $faker->unique()->userName . mt_rand(10, 99),
             'prefixname' => 'Mr',
             'password' => Hash::make('mazen@123'),
-            'photo' => url().'/storage/images/user-defualt.png',
+            'photo' => '/images/user-defualt.png',
         ];
     
         return $userData;

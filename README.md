@@ -23,6 +23,12 @@
     <pre>php artisan migrate</pre>
     This command will create the necessary database tables.
   </li>
+  <li>
+      <!-- Step 3: Create Storage Link -->
+      <strong>Step 3: Create Storage Link</strong>
+      <pre>php artisan storage:link</pre>
+      This command will create the necessary symbolic link to the storage directory, allowing files stored in the storage directory to be accessed via the web server.
+  </li>
 
   <li>
     <strong>Step 4: Start the Development Server</strong>

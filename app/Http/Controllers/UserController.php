@@ -90,7 +90,7 @@ class UserController extends Controller
                 $user_image = $this->userService->upload($request->file('photo'));
             }else{  
                 // assign defualt photo to user
-                $user_image =url('/').'/storage/images/user-defualt.png';
+                $user_image =url('/').'/images/user-defualt.png';
             }
             $user = $this->userService->store([
                 'firstname' => $request->firstname,

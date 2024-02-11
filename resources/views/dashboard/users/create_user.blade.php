@@ -17,7 +17,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-12 ">
-                                <img id="uploadedImageProfile" src="/storage/images/user-defualt.png" alt="Uploaded Image"
+                                <img id="uploadedImageProfile" src="/images/user-defualt.png" alt="Uploaded Image"
                                     src="" accept="image/png, image/jpeg">
                                 <input type='file' name="photo" class="form-control mt-2" id="readUrl"
                                     accept="image/*">
