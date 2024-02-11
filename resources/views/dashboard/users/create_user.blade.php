@@ -19,7 +19,8 @@
                             <div class="col-md-12 ">
                                 <img id="uploadedImageProfile" src="/images/user-defualt.png" alt="Uploaded Image"
                                     src="" accept="image/png, image/jpeg">
-                                <input type='file' name="profile" class="form-control mt-2" id="readUrl">
+                                <input type='file' name="photo" class="form-control mt-2" id="readUrl"
+                                    accept="image/*">
                             </div>
 
                             <div class="col-md-4 mt-3">
@@ -99,53 +100,7 @@
 
     @push('js')
         <script>
-            $('#create-user').submit(function(e) {
-                e.preventDefault();
-                var selector = "#create-user";
-                $(selector + " .spinner-border").removeClass("d-none");
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    type: 'POST',
-                    url: $(selector).attr("action"),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(res) {
-                        $(selector + " .spinner-border").addClass("d-none");
-                        if (res.success) {
-                            $(selector + " .alert-success ").removeClass("d-none");
-                            $(selector + " .alert-danger ").addClass("d-none");
-                            $(selector + " .alert-success").html(res.message);
-
-                            setTimeout(() => {
-                                window.location.href = "/admin"
-                            }, 3000);
-                        } else {
-                            $(selector + " .alert-success ").addClass("d-none");
-                            $(selector + " .alert-danger ").removeClass("d-none");
-                            $(selector + " .alert-danger").html(res.message);
-                        }
-
-                    },
-                    error: function(data) {}
-                });
-            });
-            var selectorPreview = document.getElementById('readUrl');
-            if (selectorPreview) {
-                selectorPreview.addEventListener('change', function() {
-                    if (this.files[0]) {
-                        var picture = new FileReader();
-                        picture.readAsDataURL(this.files[0]);
-                        picture.addEventListener('load', function(event) {
-                            document.getElementById('uploadedImageProfile').setAttribute('src', event
-                                .target
-                                .result);
-                        });
-                    }
-                });
-            }
+ 
         </script>
     @endpush
 @endsection

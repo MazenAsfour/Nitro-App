@@ -53,10 +53,13 @@
                     <div class="modal-body p-4">
                         Make sure that this user will not show here again!
                     </div>
-                    <input type="hidden" class="id" name="id">
-                    <div class="alert alert-success ds-none" style="padding:8px 12px;font-size:14px;margin:0 10px 10px "
+                    <input type="hidden" class="data-id" name="id">
+                    <div class="alert alert-success d-none"
                         role="alert">
                         Trashed Seccuessfully
+                    </div>
+                    <div class="alert alert-danger d-none" role="alert">
+                        Some thing went wrong! please try again
                     </div>
                     <div class="modal-footer text-right">
                         <button class="btn btn-light" onclick="hideModal('modal-delete')">Cancel</button>

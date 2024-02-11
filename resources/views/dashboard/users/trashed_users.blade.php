@@ -79,19 +79,21 @@
                     @method('PATCH')
                     <div class="modal-header">
                         <h5 class="modal-title" id="">Do You Want To Restore This User?</h5>
-                        <button type="button" class="btn-close" onclick="hideModal('restore-user')"
+                        <button type="button" class="btn-close" onclick="hideModal('#restore-user')"
                             data-mdb-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4">
                         Make sure that this user will return to users table!
                     </div>
                     <input type="hidden" class="data-id" name="id">
-                    <div class="alert alert-success ds-none" style="padding:8px 12px;font-size:14px;margin:0 10px 10px "
-                        role="alert">
+                    <div class="alert alert-success d-none" role="alert">
                         Restored Seccuessfully
                     </div>
+                    <div class="alert alert-danger d-none" role="alert">
+                        Some thing went wrong! please try again
+                    </div>
                     <div class="modal-footer text-right">
-                        <button class="btn btn-light" onclick="hideModal('restore-user')">Cancel</button>
+                        <button class="btn btn-light" onclick="hideModal('#restore-user')">Cancel</button>
                         <button class="btn btn-primary" type="submit">Confirm And Restore</button>
                         <div class="spinner-border spinner-border-sm d-none" role="status">
                             <span class="sr-only">Loading...</span>

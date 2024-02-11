@@ -22,7 +22,8 @@
                             <div class="col-md-12 ">
                                 <img id="uploadedImageProfile" src="{{ $user->photo }}" alt="Uploaded Image"
                                     accept="image/png, image/jpeg">
-                                <input type='file' name="profile" class="form-control mt-2" id="readUrl">
+                                <input type="file" name="photo" class="form-control mt-2" id="readUrl"
+                                    accept="image/*">
                             </div>
 
                             <div class="col-md-4 mt-3">
@@ -114,95 +115,6 @@
     </div>
 
     @push('js')
-        <script>
-            $("#update-password").change(function() {
-                if ($("#update-password:checked").length) {
-                    $(".password-area").each(function() {
-                        $(this).show();
-                    })
-                } else {
-                    $(".password-area").each(function() {
-                        $(this).hide();
-                    })
-                }
-            })
-            $('#update-user').submit(function(e) {
-                e.preventDefault();
-                var selector = "#update-user";
-                handleSpinner(selector, true)
-                var formData = new FormData(this);
-                $.ajax({
-                    type: 'POST',
-                    url: $(selector).attr("action"),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(res) {
-                        handleSpinner(selector, false)
-                        console.log(res)
-                        if (res.success) {
-                            handleAlerts(selector, true, res.message)
-                            setTimeout(() => {
-                                window.location.href = "/admin"
-                            }, 3000);
-                        } else {
-                            handleAlerts(selector, false, res.message)
-                        }
-
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        if (xhr.responseJSON && xhr.responseJSON.errors) {
-                            var selector = "#update-user";
-                            collectValidationErrors(xhr.responseJSON.errors, selector)
-                            handleSpinner(selector, false)
-                        }
-                    }
-                });
-            });
-
-            function collectValidationErrors(errors, selector) {
-                var errorMessage = '<ul>';
-
-                $.each(errors, function(field, messages) {
-                    // Loop through each error message for the field
-                    $.each(messages, function(index, message) {
-                        errorMessage += '<li>' + message + '</li>';
-                    });
-                });
-
-                errorMessage += '</ul>';
-                handleAlerts(selector, false, errorMessage)
-            }
-
-            function handleSpinner(selector, show = false) {
-                var SelectorSpinner = $(selector + " .spinner-border");
-                if (show) {
-                    SelectorSpinner.removeClass("d-none")
-                } else {
-                    SelectorSpinner.addClass("d-none")
-                }
-            }
-
-            function handleAlerts(selector, success = false, message = null) {
-                var SelectorSuccess = $(selector + " .alert-success");
-                var SelectorFailed = $(selector + " .alert-danger");
-
-                if (success) {
-                    if (SelectorSuccess.length) {
-                        SelectorSuccess.removeClass("d-none")
-                        SelectorFailed.addClass("d-none")
-                        if (message)
-                            SelectorSuccess.html(message)
-                    }
-                } else {
-                    if (SelectorFailed.length) {
-                        SelectorFailed.removeClass("d-none")
-                        SelectorSuccess.addClass("d-none")
-                        if (message)
-                            SelectorFailed.html(message)
-                    }
-                }
-            }
-        </script>
+        <script></script>
     @endpush
 @endsection

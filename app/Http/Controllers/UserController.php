@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
-use DataTables;
 use App\Models\User; 
-use DB;
-use Hash;
-use Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Services\UserService; 
 
 class UserController extends Controller
@@ -48,18 +45,16 @@ class UserController extends Controller
 
     public function getUsers()
     {
-        $data = User::orderBy("id", "desc")->get();
+        $data = $this->userService->getPaginatedUsersDatatable();
 
-        return DataTables::of($data)->make(true);
+        return $data;
     }
     public function trashed()
     {
-        $data = User::withTrashed()
-        ->whereNotNull("deleted_at")
-        ->orderBy("id", "desc")
-        ->get();
+        $data = $this->userService->getPaginatedTrashedUsers();
 
-        return DataTables::of($data)->make(true);
+        return $data;
+   
     }
     public function trashUser(Request $request)
     {
@@ -76,64 +71,35 @@ class UserController extends Controller
 
             if($user){
                 $this->userService->destroy($user->id);
+                DB::commit();
+                return response()->json(["success" => true, "message" => "User trashed successfully"]);
             }else{
                 return response()->json(["success" => false, "message" =>"Can't found user with this id"]);
             }
-            DB::commit();
-
-            return response()->json(["success" => true, "message" => "User trashed successfully"]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(["success" => false, "message" => $th->getMessage()]);
         }
     }
 
-    public function createUser(Request $request)
+    public function createUser(UserRequest $request)
     {
         try {
 
-            $rules = [
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'username' => ['required', 'max:255', 'unique:users'],
-                'gender' => 'required|string|in:mr,mrs,ms',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|string|min:8|confirmed',
-            ];
-          
-        
-            // Validate the request
-            $validator = Validator::make($request->all(), $rules);
-        
-            // If validation fails, retrieve the validation errors
-            if ($validator->fails()) {
-                $errors = $validator->errors()->all();
-        
-                // Format errors as HTML list
-                $errorList = '<ul>';
-                foreach ($errors as $error) {
-                    $errorList .= "<li>$error</li>";
-                }
-                $errorList .= '</ul>';
-        
-                // Return the HTML list of errors
-                return response()->json(['success' => false, 'message' => $errorList]);
-            }
-
-            if($request->hasFile("profile")){
-                $user_image = $this->userService->upload($request->file('profile'));
+            if($request->hasFile("photo")){
+                $user_image = $this->userService->upload($request->file('photo'));
             }else{  
-                // create defualt profile to user
-                $user_image =url('/').'/images/user-defualt.png';
+                // assign defualt photo to user
+                $user_image =url('/').'/storage/images/user-defualt.png';
             }
             $user = $this->userService->store([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
-                'middlename' =>$this->userService-> $request->middlename,
+                'middlename' =>$request->middlename,
                 'username' => $request->username,
                 'suffixname' => $request->suffixname,
                 'type' => $request->type,
-                'prefixname' => $request->gender,
+                'prefixname' => ucfirst($request->gender),
                 'email' => $request->email,
                 'password' =>$this->userService->Hash($request->password),
                 'photo' => $user_image,
@@ -163,11 +129,11 @@ class UserController extends Controller
                 'username' => $request->username,
                 'suffixname' => $request->suffixname,
                 'type' => $request->type,
-                'prefixname' => $request->gender,
+                'prefixname' => ucfirst($request->gender),
                 'email' => $request->email,
             ];
-            if($request->hasFile("profile")){
-                $file = $this->userService->upload($request->file('profile'));
+            if($request->hasFile("photo")){
+                $file = $this->userService->upload($request->file('photo'));
                 
                 // $user->photo = $request->photo;
                 $dataUpdated['photo'] = $file;

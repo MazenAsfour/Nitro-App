@@ -11,7 +11,7 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="/admin/">All Users</a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="/admin/user-create">Create users</a>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/user-create">Create user</a>
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="/admin/trashed-users">Trashed users</a>
                     </li>

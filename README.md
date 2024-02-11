@@ -1,5 +1,7 @@
 <!-- Clone this repository using bash terminal: -->
+
     git clone https://github.com/MazenAsfour/Nitro-App.git
+
 <!--End clone area -->
 
 <!--Follow these steps to set up and run the Laravel application:-->
@@ -28,6 +30,12 @@
     <pre>php artisan serve</pre>
     The application will be accessible at <code>http://localhost:8000</code> by default. Open this URL in your web browser to view the application.
     <br><strong>Note:</strong> Ensure your environment meets the Laravel <a href="https://laravel.com/docs/8.x/installation#server-requirements" target="_blank">requirements</a>.
+  </li>
+  <li>
+    <strong>Step 5: You can login using my own account or create new account from register</strong>
+    <br>
+    Email : <strong>Mazenasfour6@gmail.com</strong>
+    Password : <strong> mazen@123 </strong>
   </li>
 </ul>
 <!--End Steps area-->

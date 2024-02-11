@@ -5,13 +5,15 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Detail;
 use App\Events\UserSaved;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Services\UserServiceInterface;
-use DB;
-use Hash;
+use DataTables;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+
 class UserService implements UserServiceInterface
 {
     /**
@@ -58,6 +60,7 @@ class UserService implements UserServiceInterface
         'gender' => 'required|string|in:mr,mrs,ms',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:8|confirmed',
+
     ];
 
     // Add common rules to the main rules array
@@ -78,17 +81,37 @@ class UserService implements UserServiceInterface
         unset($rules['password']);
     }
 
+    if (isset($request['photo'])) {
+        $rules['photo'] = 'image|mimes:jpeg,png,jpg,gif|max:2048';
+    }
+
     return $rules;
 }
 
     /**
      * Retrieve all resources and paginate.
      *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return DataTables
      */
-    public function list()
+    public function getPaginatedUsersDatatable()
     {
-        // Code goes brrrr.
+        $data = User::orderBy("id","desc")->get();
+
+        return DataTables::of($data)->make(true);
+    }
+    /**
+     * Retrieve all resources and paginate.
+     *
+     * @return DataTables
+     */
+    public function getPaginatedTrashedUsers()
+    {
+        $data = User::withTrashed()
+        ->whereNotNull("deleted_at")
+        ->orderBy("id", "desc")
+        ->get();
+
+        return DataTables::of($data)->make(true);
     }
     /**
      * Get a paginated list of users.
@@ -224,7 +247,6 @@ class UserService implements UserServiceInterface
     public function hash(string $key): string
     {
         return Hash::make($key);
-        // Code goes brrrr.
     }
 
     /**

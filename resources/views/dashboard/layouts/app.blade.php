@@ -2,15 +2,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title id="title" title="@yield('title', 'home')">@yield('title', 'Laravel')</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title id="title">@yield('title', 'Laravel')</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <!-- plugins:css -->
     <link rel="stylesheet" href="/dashboard/vendors/feather/feather.css">
     <link rel="stylesheet" href="/dashboard/vendors/ti-icons/css/themify-icons.css">
@@ -53,7 +52,7 @@
         @includeFirst(['dashboard/layouts/header'])
 
         <div class="container-fluid page-body-wrapper">
-            @includeFirst(['dashboard/layouts/left_bar'])
+            @includeFirst(['dashboard/layouts/side_bar'])
             <div class="main-panel">
                 <div class="content-wrapper">
                     @yield('content')
