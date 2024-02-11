@@ -44,7 +44,7 @@ class UserServiceTest extends TestCase
             'username' => $faker->unique()->userName . mt_rand(10, 99),
             'prefixname' => 'Mr',
             'password' => Hash::make('mazen@123'),
-            'photo' => '/images/user-defualt.png',
+            'photo' => '/storage/images/user-defualt.png',
         ];
     
         return $userData;
