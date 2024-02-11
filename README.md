@@ -34,8 +34,10 @@
   <li>
     <strong>Step 5: You can login using my own account or create new account from register</strong>
     <br>
-    Email : <strong>Mazenasfour6@gmail.com</strong>
-    Password : <strong> mazen@123 </strong>
+    <pre>
+        Email : <strong>Mazenasfour6@gmail.com</strong><br>
+        Password : <strong> mazen@123 </strong>
+    </pre>
   </li>
 </ul>
 <!--End Steps area-->
