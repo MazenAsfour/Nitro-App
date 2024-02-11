@@ -24,21 +24,20 @@
     This command will create the necessary database tables.
   </li>
   <li>
-      <!-- Step 3: Create Storage Link -->
-      <strong>Step 3: Create Storage Link</strong>
+      <strong>Step 4: Create Storage Link</strong>
       <pre>php artisan storage:link</pre>
       This command will create the necessary symbolic link to the storage directory, allowing files stored in the storage directory to be accessed via the web server.
   </li>
 
   <li>
-    <strong>Step 4: Start the Development Server</strong>
+    <strong>Step 5: Start the Development Server</strong>
     <br>Launch the Laravel development server by running:
     <pre>php artisan serve</pre>
     The application will be accessible at <code>http://localhost:8000</code> by default. Open this URL in your web browser to view the application.
     <br><strong>Note:</strong> Ensure your environment meets the Laravel <a href="https://laravel.com/docs/8.x/installation#server-requirements" target="_blank">requirements</a>.
   </li>
   <li>
-    <strong>Step 5: You can login using my own account or create new account from register</strong>
+    <strong>Step 6: You can login using my own account or create new account from register</strong>
     <br>
     <pre>Email : <strong>Mazenasfour6@gmail.com</strong><br>Password : <strong>mazen@123 </strong></pre>
   </li>
