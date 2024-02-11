@@ -57,7 +57,7 @@ class UserService implements UserServiceInterface
     $commonRules = [
         'firstname' => 'required|string|max:255',
         'lastname' => 'required|string|max:255',
-        'gender' => 'required|string|in:mr,mrs,ms',
+        'gender' => 'required|string|in:Mr,Mrs,Ms',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:8|confirmed',
 
@@ -262,6 +262,11 @@ class UserService implements UserServiceInterface
         return url('/').$new_path;
     }
 
+    /**
+    * Save user details.
+    *
+    * @param  App\Model\User $user
+    */
     public function saveUserDetails(User $user)
     {
         $fullName = $user->firstname . ' ' . $user->middlename . ' ' . $user->lastname;

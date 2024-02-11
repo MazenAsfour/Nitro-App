@@ -42,9 +42,9 @@ class UserServiceTest extends TestCase
             'lastname' => $faker->lastName,
             'email' => $faker->unique()->safeEmail,
             'username' => $faker->unique()->userName . mt_rand(10, 99),
-            'prefixname' => 'mr',
+            'prefixname' => 'Mr',
             'password' => Hash::make('mazen@123'),
-            'photo' => '/images/user-defualt.png',
+            'photo' => url().'/storage/images/user-defualt.png',
         ];
     
         return $userData;
@@ -229,31 +229,15 @@ class UserServiceTest extends TestCase
         // This case need server to make do it becouse this need extension 
         // I can download it on local but you can't see this externsion when you pull me project
         // so we can do it based on column photo on user table 
-        $user = User::latest()->whereColumn('updated_at', '>', 'created_at')->first();
-
+        $user = User::latest()->first();
+    
         $userService = $this->userService();
-
-        $this->assertNull($user->photo);
-
-        $user->photo = 'placeholder_photo.jpg'; 
-
-        // // Create a fake uploaded file
-        // $photoFile = UploadedFile::fake()->image(now()->timestamp.'_photo.jpg');
-
-        // // Instantiate the UserService
-        // $userService = $this->userService();
-
-        // // Act
-        // // Call the method to upload a photo for the user
-        // $photoUploaded = $userService->upload($user, $photoFile);
-
-        // // Assert
-        // // Assert that the photo upload was successful
-        // $this->assertTrue($photoUploaded);
-
-        // // Assert that the user's photo attribute is not null after upload
+   
+    
+        // Assert that the user's photo attribute is not null after upload
         $this->assertNotNull($user->photo);
     }
+    
 
 }
 

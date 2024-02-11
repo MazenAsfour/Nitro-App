@@ -58,11 +58,11 @@
                                 <select name="gender" class="form-control" id="" name="gender">
                                     <option value="{{ $user->prefixname }}">{{ ucfirst($user->prefixname) }}</option>
 
-                                    <option class="{{ $user->prefixname == 'mr' ? 'd-none' : '' }}" value="mr">Mr
+                                    <option class="{{ $user->prefixname == 'Mr' ? 'd-none' : '' }}" value="mr">Mr
                                     </option>
-                                    <option class="{{ $user->prefixname == 'mrs' ? 'd-none' : '' }}" value="mrs">Mrs
+                                    <option class="{{ $user->prefixname == 'Mrs' ? 'd-none' : '' }}" value="mrs">Mrs
                                     </option>
-                                    <option class="{{ $user->gender == 'ms' ? 'd-none' : '' }}" value="ms">Ms</option>
+                                    <option class="{{ $user->gender == 'Ms' ? 'd-none' : '' }}" value="ms">Ms</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mt-3">

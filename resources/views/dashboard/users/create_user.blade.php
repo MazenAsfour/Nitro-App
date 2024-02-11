@@ -17,7 +17,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-12 ">
-                                <img id="uploadedImageProfile" src="/images/user-defualt.png" alt="Uploaded Image"
+                                <img id="uploadedImageProfile" src="/storage/images/user-defualt.png" alt="Uploaded Image"
                                     src="" accept="image/png, image/jpeg">
                                 <input type='file' name="photo" class="form-control mt-2" id="readUrl"
                                     accept="image/*">
@@ -51,9 +51,9 @@
                             <div class="col-md-4 mt-3">
                                 <label class="">Gender And Marital Status</label>
                                 <select name="gender" class="form-control" id="" name="gender">
-                                    <option value="mr">Mr</option>
-                                    <option value="mrs">Mrs</option>
-                                    <option value="ms">Ms</option>
+                                    <option value="Mr">Mr</option>
+                                    <option value="Mrs">Mrs</option>
+                                    <option value="Ms">Ms</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mt-3">
@@ -99,8 +99,6 @@
     </div>
 
     @push('js')
-        <script>
- 
-        </script>
+        <script></script>
     @endpush
 @endsection

@@ -82,9 +82,9 @@
 
                                 <div class="col-md-6">
                                     <select name="gender" class="form-control" id="" name="gender">
-                                        <option value="mr">Mr</option>
-                                        <option value="mrs">Mrs</option>
-                                        <option value="ms">Ms</option>
+                                        <option value="Mr">Mr</option>
+                                        <option value="Mrs">Mrs</option>
+                                        <option value="Ms">Ms</option>
                                     </select>
 
                                     @error('gender')
