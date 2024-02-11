@@ -60,7 +60,6 @@ class UserService implements UserServiceInterface
         'gender' => 'required|string|in:Mr,Mrs,Ms',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:8|confirmed',
-
     ];
 
     // Add common rules to the main rules array
@@ -71,20 +70,22 @@ class UserService implements UserServiceInterface
         // Add specific rules for update request
         $rules['username'] = ['required', 'max:255', 'unique:users,username,' . $request["user_id"]];
         $rules['email'] = 'required|email|unique:users,email,' . $request["user_id"];
+
+        if (!isset($request['update_password'])) {
+            unset($rules['password']);
+        }
     } else {
         // Add specific rules for create request
         $rules['username'] = ['required', 'max:255', 'unique:users,username'];
         $rules['email'] = 'required|email|unique:users,email';
     }
     // Check if the 'update_password' key is set to update the password when the checkbox is off. If the checkbox is off, the 'update_password' index won't be present in the request data.
-    if (!isset($request['update_password'])) {
-        unset($rules['password']);
-    }
+    
 
     if (isset($request['photo'])) {
         $rules['photo'] = 'image|mimes:jpeg,png,jpg,gif|max:2048';
     }
-
+    
     return $rules;
 }
 
